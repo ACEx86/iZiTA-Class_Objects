@@ -8,15 +8,10 @@ namespace iZiTA
     //<editor-fold desc="Initialization Process">
     //<editor-fold desc=":: Check Startup ::">
     $included_files = False;
-    ((__FILE__ ?? $included_files = True ?: $included_files = True) === (get_included_files()[0] ?? $included_files = True ?: $included_files = True)) ? True : ($included_files === False ? False : True) and exit('Closing Class_Objects.');
+    ((__FILE__ ?? $included_files = True ?: $included_files = True) === (get_included_files()[0] ?? $included_files = True ?: $included_files = True)) ? True : ($included_files === False ? False : True) and exit('Closing on \iZiTA\Class_Objects.');
     //</editor-fold>
     date_default_timezone_set('UTC');
-    defined('>\iZiTA\Class_Objects') or exit('Class_Objects is not defined.');
-    //<editor-fold desc="Test Use Settings">
-    error_reporting(error_level: E_ALL & ~E_NOTICE & ~E_WARNING);
-    ini_set(option:'display_errors', value:'1');
-    ini_set(option:'display_startup_errors', value:'1');
-    //</editor-fold>
+    defined('>\iZiTA\Class_Objects') or exit('Closing: >\iZiTA\Class_Objects is not defined.');
     //</editor-fold>
     /**
      * iZiTA::Class_Objects<br>
