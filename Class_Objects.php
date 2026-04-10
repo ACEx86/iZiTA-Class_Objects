@@ -15,7 +15,7 @@ namespace iZiTA
     //</editor-fold>
     /**
      * iZiTA::Class_Objects<br>
-     * Script version: <b>202604.5.7.71</b><br>
+     * Script version: <b>202604.5.7.73</b><br>
      * PHP Version: <b>8.5</b><br>
      * <b>Info:</b><br>
      * iZiTA::Class_Objects is a library that loads the Classes of the libraries to be used as objects.<br>
@@ -90,10 +90,16 @@ namespace iZiTA
                                 and enum_exists((((String)$State[0]).((String)$Object)), False) === False
                                 and (isset($State[2]) === True
                                     ? (is_string($State[2]) === True
-                                        ? $Class_Object = ((((String)$State[0]).((String)$Object)))::{$State[2]}(...$State[3] ?? [''])
-                                        : exit(' [ !I ] ( Class_Objects )                   '.(((String)$State[0]).((String)$Object)).'Invalid class call.')
+                                        ? ((isset($State[3]) === True and is_array($State[3]) === True)
+                                                ? $Class_Object = ((((String)$State[0]).((String)$Object)))::{$State[2]}(...$State[3])
+                                                : $Class_Object = ((((String)$State[0]).((String)$Object)))::{$State[2]}()
+                                        )
+                                        : exit(' [ !I ] ( Class_Objects )                   '.(((String)$State[0]).((String)$Object)).' invalid class call.')
                                     )
-                                    : $Class_Object = new ((((String)$State[0]).((String)$Object)))
+                                    : ((isset($State[3]) === True and is_array($State[3]) === True)
+                                            ? $Class_Object = new ((((String)$State[0]).((String)$Object)))(...$State[3])
+                                            : $Class_Object = new ((((String)$State[0]).((String)$Object)))
+                                    )
                                 )
                                 and isset($Class_Object) === True
                                 and is_object($Class_Object) === True
