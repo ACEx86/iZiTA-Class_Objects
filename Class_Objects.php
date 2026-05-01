@@ -333,7 +333,7 @@ namespace iZiTA
          */
         Private Static ?\iZiTA\Class_Objects $is_Class_Object = Null;
         //</editor-fold>
-        //<editor-fold desc="Private Hooked Class Objects [v7]">
+        //<editor-fold desc="Private Hooked Class Objects [v8]">
         /**
          * @var ?Object
          * This is the <b>Object</b> of the <b>Class</b> that was requested.<br>
@@ -379,14 +379,22 @@ namespace iZiTA
                 {
                     if(isset($this->__Class_Name) === True and $this->__Class_Name === '')
                     {
-                        $this->__Class_Name = $Class_Name;
+                        if(mb_detect_encoding(string:$Class_Name, encodings:'UTF-8', strict:True) === 'UTF-8')
+                        {
+                            $Class_Name = preg_replace(pattern:"/[^\p{L}\p{Nd}_]/u", replacement:'', subject:$Class_Name);
+                            if(isset($Class_Name) === True)
+                            {
+                                $this->__Class_Name = $Class_Name;
+                            }
+                        }
                     }
+                    $Class_Name = '';
                 }
             }
         /**
          * @var ?array
          * This is the array of objects <b>iZiTA::__Object</b> of the loaded classes.<br>
-         * It will be used to access the shared variables and functions inside the classes.<br>
+         * It will be used to access the accessible properties and methods inside the classes.<br>
          * It returns the selected object.
          */
         Private ?array $__Object = Null
@@ -396,12 +404,20 @@ namespace iZiTA
                     if(isset($this->__Object) === True)
                     {
                         $__Class_Name = $this->__Class_Name ?? Null;
-                        if(isset($__Class_Name) === True and empty($__Class_Name) === False and strlen($__Class_Name) > 0)
+                        if(isset($__Class_Name) === True and empty($__Class_Name) === False and mb_detect_encoding(string:$__Class_Name, encodings:'UTF-8', strict:True) === 'UTF-8' and strlen(string:$__Class_Name) > 0)
                         {
-                            if(is_object($this->__Object[0][$__Class_Name][0]) === True)
+                            $__Class_Name = preg_replace(pattern:"/[^\p{L}\p{Nd}_]/u", replacement:'', subject:$__Class_Name);
+                            if(isset($__Class_Name) === True)
                             {
-                                $this->Object_Reference = $this->__Object[0][$__Class_Name][0];
-                                return ['1'];
+                                if(is_object(value:$this->__Object[0][$__Class_Name][0]) === True)
+                                {
+                                    $this->Object_Reference = $this->__Object[0][$__Class_Name][0];
+                                    return ['1'];
+                                }
+                                else
+                                {
+                                    return Null;
+                                }
                             }
                             else
                             {
@@ -412,19 +428,19 @@ namespace iZiTA
                     }
                     return Null;
                 }
-                set(?array $_)
+                set(?array $__Object)
                 {
                     if(isset($this->__Object) === False)
                     {
-                        $this->__Object[] = $_;
-                        $_ = Null;
-                        unset($_);
+                        $this->__Object[] = $__Object;
+                        $__Object = Null;
+                        unset($__Object);
                     }
                 }
             }
         //</editor-fold>
         //</editor-fold>
-        //<editor-fold desc="Functions [v1]">
+        //<editor-fold desc="Functions [v2]">
         //<editor-fold desc="Private Functions">
         Private Function do_Defined(): Void
         {
@@ -757,7 +773,7 @@ namespace iZiTA
          * @return array|String|Float|Int|Bool|Null
          * Returns the result of the method invocation or property value modification.
          * Returns <b>`True`</b> if a void function executed successfully.
-         * Returns <b>`False`</b> if there is an error with the execution.
+         * Returns <b>`False`</b> on execution error.
          */
         Final Static Function Call_Object_Handler(String $Object_Name, String $Object_Function, ...$Arguments): array|String|Float|Int|Bool|Null
         {
