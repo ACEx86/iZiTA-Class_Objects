@@ -15,7 +15,7 @@ namespace iZiTA
     //</editor-fold>
     /**
      * iZiTA::Class_Objects<br>
-     * Script version: <b>202604.7.9.89</b><br>
+     * Script version: <b>202604.7.10.99</b><br>
      * PHP Version: <b>8.5</b><br>
      * <b>Info:</b><br>
      * iZiTA::Class_Objects is a library that loads the Classes of the libraries to be used as objects.<br>
@@ -737,7 +737,11 @@ namespace iZiTA
         }
         //</editor-fold>
         //<editor-fold desc="Final Functions">
-        Final Static Function isset_Call_Object(): Bool
+        /**
+         * Check if Class_Object is constructed.
+         * @return bool Returns <b>`True`</b> if Class_Object is constructed <b>`False`</b> otherwise.
+         */
+        Final Static Function isset_Class_Object(): Bool
         {
             if(isset(self::$is_Class_Object) === True and self::$is_Class_Object instanceof \iZiTA\Class_Objects)
             {
@@ -752,19 +756,16 @@ namespace iZiTA
          * @param mixed ...$Arguments Optional arguments to pass to the method or to assign to the property.
          * @return array|String|Float|Int|Bool|Null
          * Returns the result of the method invocation or property value modification.
-         * Returns <b>`True`</b> if a void function is executed successfully.
-         * Returns <b>`False`</b> if there is an error in the execution.
+         * Returns <b>`True`</b> if a void function executed successfully.
+         * Returns <b>`False`</b> if there is an error with the execution.
          */
         Final Static Function Call_Object_Handler(String $Object_Name, String $Object_Function, ...$Arguments): array|String|Float|Int|Bool|Null
         {
-            if(isset(self::$is_Class_Object) === True)
+            if(isset(self::$is_Class_Object) === True and self::$is_Class_Object instanceof \iZiTA\Class_Objects)
             {
                 return self::$is_Class_Object->Call_Object($Object_Name, $Object_Function, ...$Arguments);
             }
-            else
-            {
-                return Null;
-            }
+            return Null;
         }
         //</editor-fold>
         //</editor-fold>
